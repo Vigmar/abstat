@@ -128,6 +128,7 @@ class ButtonAppBar extends React.Component {
 					 <MenuItem onClick={()=>self.handleClose("products/"+index)}>{item}</MenuItem>)
 					 
 					}) }
+					{ mIndex == 2 &&  <MenuItem onClick={()=>self.handleClose("sellpoints")}>Информация</MenuItem> }
 					</MenuList>
 					</ExpansionPanelDetails>
 				  </ExpansionPanel>)
