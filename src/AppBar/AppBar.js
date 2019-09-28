@@ -8,7 +8,15 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { connect } from 'react-redux';
 
@@ -26,6 +34,12 @@ const styles = {
     marginRight: 20,
   },
 };
+
+const mainMenuItems = ["Перепись 2010","Текущая демографическая статистика","Перепись 2020","Социальная инфраструктура"];
+
+const menu2010 = ["Численность","Плотность населения по субъектам","Соотношение город/село","Изменение чисденности населения по субъектам",
+"Половозрастной состав населения","Состояние в браке","Национальный состав","Экономически активное население","Рождаемость"];
+
 
 class ButtonAppBar extends React.Component {
 
@@ -52,12 +66,24 @@ class ButtonAppBar extends React.Component {
 	}
 	
 	  handleClickAway = () => {
-		this.setState({ isOpen: false, });
+		//this.setState({ isOpen: false, });
 	};
 	 
 
 	render()
 	{	
+	
+	
+	/*
+	
+				  <MenuItem onClick={()=>this.handleClose("")}>Profile</MenuItem>
+				  <MenuItem onClick={()=>this.handleClose("products")}>Products</MenuItem>
+				  <MenuItem onClick={()=>this.handleClose("sellpoints")}>Sell points</MenuItem>
+				  <MenuItem onClick={()=>this.handleClose("login")}>Logout</MenuItem>
+				
+				*/
+	
+	var self = this;
 	const { classes } = this.props;
 		  return (
 			<div className={classes.root}>
@@ -70,7 +96,7 @@ class ButtonAppBar extends React.Component {
 					/>
 				  </IconButton>
 				  <Typography variant="h6" color="inherit" className={classes.grow}>
-					News
+					Перепись 2020
 				  </Typography>
 				  <Button color="inherit">Login</Button>
 				</Toolbar>
@@ -80,11 +106,37 @@ class ButtonAppBar extends React.Component {
 				  open={this.state.isOpen}
 				     
 				>
-				  <MenuItem onClick={()=>this.handleClose("")}>Profile</MenuItem>
-				  <MenuItem onClick={()=>this.handleClose("products")}>Products</MenuItem>
-				  <MenuItem onClick={()=>this.handleClose("sellpoints")}>Sell points</MenuItem>
-				  <MenuItem onClick={()=>this.handleClose("login")}>Logout</MenuItem>
+				  
+				  
+				  { mainMenuItems.map(function(mItem,mIndex)
+					  {
+				  
+						return (
+							   <ExpansionPanel>
+					<ExpansionPanelSummary
+					  expandIcon={<ExpandMoreIcon />}
+					  aria-controls="panel1a-content"
+					  id="panel1a-header"
+					>
+					{mItem}
+					</ExpansionPanelSummary>
+					<ExpansionPanelDetails>
+					<MenuList>
+					{ mIndex == 0 && menu2010.map(function(item,index)
+						{
+							return (
+					 <MenuItem onClick={()=>self.handleClose("products/"+index)}>{item}</MenuItem>)
+					 
+					}) }
+					</MenuList>
+					</ExpansionPanelDetails>
+				  </ExpansionPanel>)
+	  
+				  }) }
+    
+				  
 				</Menu>
+				
 				</ClickAwayListener>
 			</div>
 		  );

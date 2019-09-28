@@ -14,30 +14,35 @@ import { AppBar } from '../AppBar/AppBar';
 import '../../node_modules/react-vis/dist/style.css';
 
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, VerticalBarSeries, VerticalGridLines, MarkSeries, ArcSeries,Sunburst } from 'react-vis';
+import {Treemap} from 'react-vis';
+
+import ReactDOM from "react-dom"
+
+
 
 import Switch from "@material-ui/core/Switch";
 
 const myData = {
  "title": "analytics",
- "color": "#12939A",
+ 
  "children": [
   {
    "title": "cluster",
    "children": [
-    {"title": "AgglomerativeCluster", "color": "#12939A", "size": 3938},
-    {"title": "CommunityStructure", "color": "#12939A", "size": 3812},
-    {"title": "HierarchicalCluster", "color": "#12939A", "size": 6714},
-    {"title": "MergeEdge", "color": "#12939A", "size": 743}
+    {"title": "AgglomerativeCluster", "color": "#2939A", "size": 3938},
+    {"title": "CommunityStructure", "color": "#32939A", "size": 3812},
+    {"title": "HierarchicalCluster", "color": "#42939A", "size": 6714},
+    {"title": "MergeEdge", "color": "#52939A", "size": 743}
    ]
   },
   {
    "title": "graph",
    "children": [
-    {"title": "BetweennessCentrality", "color": "#12939A", "size": 3534},
-    {"title": "LinkDistance", "color": "#12939A", "size": 5731},
-    {"title": "MaxFlowMinCut", "color": "#12939A", "size": 7840},
-    {"title": "ShortestPaths", "color": "#12939A", "size": 5914},
-    {"title": "SpanningTree", "color": "#12939A", "size": 3416}
+    {"title": "BetweennessCentrality", "color": "#12139A", "size": 3534},
+    {"title": "LinkDistance", "color": "#12930A", "size": 5731},
+    {"title": "MaxFlowMinCut", "color": "#8293FA", "size": 7840},
+    {"title": "ShortestPaths", "color": "#A2939A", "size": 5914},
+    {"title": "SpanningTree", "color": "#C2039A", "size": 1416}
    ]
   },
   {
@@ -48,8 +53,6 @@ const myData = {
   }
  ]
 }
-
-
   const data = [
       {x: 0, y: 8},
       {x: 1, y: 5},
@@ -62,6 +65,17 @@ const myData = {
       {x: 8, y: 2},
       {x: 9, y: 0}
     ];
+	
+	const PI = 3.14;
+	
+	const myDataArc = [
+  {angle0: 0, angle: Math.PI / 4, opacity: 0.2, radius: 2, radius0: 1},
+  {angle0: PI / 4, angle: 2 * PI / 4, radius: 3, radius0: 0},
+  {angle0: 2 * PI / 4, angle: 3 * PI / 4, radius: 2, radius0: 0},
+  {angle0: 3 * PI / 4, angle: 4 * PI / 4, radius: 2, radius0: 0},
+  {angle0: 4 * PI / 4, angle: 5 * PI / 4, radius: 2, radius0: 0},
+  {angle0: 0, angle: 5 * PI / 4, radius: 1.1, radius0: 0.8}
+]
 
 
 class SellPointPage extends React.Component {
@@ -74,23 +88,63 @@ class SellPointPage extends React.Component {
 	{
 		super(props);
 	
-		this.state = {showModal:false};
-		
+		this.state = {
+    hoveredNode: false,
+    treemapData: this._getRandomData(20),
+    useCirclePacking: false
+  };
+  
+   this._getRandomData = this._getRandomData.bind(this);
 	
 	}
+	
+	 _getRandomData(total) {
+  const totalLeaves = total || Math.random() * 20;
+  const leaves = [];
+  for (let i = 0; i < totalLeaves; i++) {
+    leaves.push({
+      name: total ? total : String(Math.random()).slice(0, 3),
+      size: Math.random() * 1000,
+      color: Math.random(),
+      style: {
+        border: 'thin solid red'
+      }
+    });
+  }
+  return {
+    title: '',
+    color: 1,
+    children: leaves
+  };
+}
 
     componentDidMount() {
-        //this.props.dispatch(sellpointActions.getAll("sellpoint_get_list",{}));
 		
-		userService.getData("sellpoint_get_list",{}).then((_res) => {
-        //console.log(_res.data);	
-      });
+		
+		console.log(this.props)
+		
 		
     }
 	
 
 
     render() {
+		
+		const {hoveredNode, useCirclePacking} = this.state;
+    const treeProps = {
+      animation: {
+        damping: 9,
+        stiffness: 300
+      },
+      data: this.state.treemapData,
+      onLeafMouseOver: x => this.setState({hoveredNode: x}),
+      onLeafMouseOut: () => this.setState({hoveredNode: false}),
+      onLeafClick: () => this.setState({treemapData: this._getRandomData()}),
+      height: 300,
+      mode: this.state.useCirclePacking ? 'circlePack' : 'squarify',
+      getLabel: x => x.name,
+      width: 350
+    };
 	
 		// <MuiTreeView tree={tree} onLeafClick={(e)=>this.leafClick(e)}/>
 	
@@ -107,6 +161,9 @@ class SellPointPage extends React.Component {
   <MarkSeries data={data} />
 </XYPlot>
 
+</div><div>
+  <Treemap {...treeProps} />
+     
 </div></div>
         );
     }

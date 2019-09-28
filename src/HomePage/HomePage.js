@@ -16,6 +16,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 
+import {
+  ComposableMap,
+  ZoomableGroup,
+  Geographies,
+  Geography,
+  Markers,
+  Marker,
+  Lines,
+  Line,
+  Annotation
+} from "react-simple-maps"
+
 import { AppBar } from '../AppBar/AppBar';
 
 
@@ -46,40 +58,14 @@ class HomePage extends React.Component {
             
         };
 		
-        this.SendReq = this.SendReq.bind(this);
-        this.ClickSave = this.ClickSave.bind(this);
-        this.ClickCancel = this.ClickCancel.bind(this);
+   
 	
 	}
     
-    SendReq()
-    {
-        /*
-        fetch('https://search-maps.yandex.ru/v1/?apikey=51bfe2f3-7a69-4bb0-aa3a-559ddd16d17d&lang=ru_RU&text=Магнолия Липецк')
-          .then(response => response.json())
-          .then(commits => console.log(commits));
-          */
-          
-          let jsonData = {};
-          
-          userService.getData("set_list",jsonData).then((_res) => { 
-          console.log(_res);
-          });
-    }
-    
-    SetSelectItem = (e,ind) => {
-    
-    
-        console.log(e);
-         let { profile } = this.state;
-        
-        profile[ind].val = e.target.value;
-        this.setState({profile});
-        
-    }
+   
 
     componentDidMount() {
-        this.props.dispatch(userActions.getCustomerInfo());
+   	
     }
 	
 	componentWillReceiveProps(props)
@@ -87,28 +73,7 @@ class HomePage extends React.Component {
 		console.log(props);
 	}
 	
-    textChange = (e, ind) => {
-    
-        let { profile } = this.state;
-        
-        profile[ind].val = e.target.value;
-        this.setState({profile});
-    
-    }
-	
-	ClickSave()
-	{
-		
-	}
-	
-	ClickCancel()
-	{
-		
-	}
-
-    handleDeleteUser(id) {
-        return (e) => this.props.dispatch(userActions.delete(id));
-    }
+ 
 
     render() {
         const { user, users } = this.props;
@@ -122,92 +87,8 @@ class HomePage extends React.Component {
         return (
 			<div>
 			<AppBar/>
-            <div className="col-md-8 col-md-offset-2">
-            <h2>Анкета предпринимателя</h2>
-            {  profile && profile.map(function(item,index){
-                
-                
-                if (item.type == "date")
-                return  (<div>  <TextField 
-                id="date"
-                label="Дата рождения"
-                type="date"
-                 onChange={(e)=>self.textChange(e,index)}
-                defaultValue="2017-01-01"
-                InputLabelProps={{
-                  shrink: true,
-                }} />
-              </div>)
-             
-              
-                
-                if (item.type=="text")
-                return (
-                   <div style={{ display: 'flex',flex:1,flexDirection: 'row', paddingTop: 5}}>
-                    <TextField
-                              autoFocus
-                              margin="dense"
-                              name="name"
-                              label={item.title}
-                              fullWidth
-                              value={profile[index].val}
-                               onChange={(e)=>self.textChange(e,index)}
-                            />
-                   </div>
-                )
-                
-                if (item.type=="number")
-                return (
-                   <div style={{ display: 'flex',flex:1,flexDirection: 'row', paddingTop: 5}}>
-                    <TextField
-                              autoFocus
-                              type="number"
-                              margin="dense"
-                              name={item.name}
-                              label={item.title}
-                              fullWidth
-                              value={profile[index].val}
-                               onChange={(e)=>self.textChange(e,index)}
-                            />
-                   </div>
-                )
-                
-                
-                 if (item.type.indexOf("select")>=0)
-                return (
-                
-                <div style={{display: 'flex', flex:1, flexDirection: 'row', borderRadius: 1, marginTop: 5, width: '100%'}}>
-                <FormControl style={{ width: '100%'}}>
-				<InputLabel htmlFor="age-simple">{item.title}</InputLabel>
-				
-				<Select
-                value={profile[index].val}
-			     onChange={(e)=>self.SetSelectItem(e,index)}
-                              inputProps={{
-                    name: "select",
-                    id: {index},
-					style: {fontSize: 12}
-                  }}
-                >
-				<MenuItem value="">
-					<em>Не выбрано</em>
-				  </MenuItem>
-                {cities.map(function(item0){
-                    return (
-                     <MenuItem value={item0.id}>{item0.name}</MenuItem>   
-					)})}
-                </Select>	
-                </FormControl>
-			</div>)
-            
-           
-            
-            })
-            }     
-            <div style={{marginTop: 20}}>
-            <Button onClick={this.ClickCancel}>Отмена</Button>
-                    <Button style={{paddingLeft: 10}} onClick={this.ClickSave} variant="contained" color="primary">Сохранить</Button>            
-            </div>        
+			<div>
+			  <img src="../images/home1.png" style={{width:window.innerWidth, height: window.innerHeight-70}}/>        
             </div>
 			</div>
 			
