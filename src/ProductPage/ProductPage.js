@@ -78,7 +78,7 @@ class ProductPage extends React.Component {
 			{ pageId % 2 == 0 && <XYPlot height={window.innerHeight-100} width={window.innerWidth-20}>
 		      <DiscreteColorLegend
             style={{position: 'absolute', right: '10px', top: '10px'}}
-            orientation="horizontal"
+            orientation="vertical"
             items={[
               {
                 title: 'Apples',
@@ -92,9 +92,10 @@ class ProductPage extends React.Component {
           />
 		     <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis />
+        
           <YAxis />
   <VerticalBarSeries data={data} />
+			<VerticalBarSeries color={"#ff00aa"} data={data} />
 			</XYPlot>}
 			
 			{ pageId % 2 == 1 && 

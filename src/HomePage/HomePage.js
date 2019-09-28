@@ -15,6 +15,17 @@ import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
+import IconLeft from '@material-ui/icons/ArrowLeft';
+import IconRight from '@material-ui/icons/ArrowRight';
+
+import IconButton from '@material-ui/core/IconButton';
+
+
+
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+
 
 import {
   ComposableMap,
@@ -37,25 +48,9 @@ class HomePage extends React.Component {
 	{
 		super(props);
 		this.state = {showModal:false,
-        profile: [
-            {name:'lastname',title:'Фамилия',val:"",type:"text"},
-            {name:'firstname',title:'Имя',val:"",type:"text"},    
-            {name:'middlename',title:'Отчество',val:"",type:"text"},    
-            {name:'bdate',title:'Дата рождения',val:"",type:"date"},    
-            {name:'city',title:'Место проживания',val:"",type:"select_place"},    
-            {name:'profession',title:'Вид деятельности',val:"",type:"select_job"},    
-            {name:'monthincome',title:'Предолагаемый месячный доход',val:"",type:"number"},    
-            {name:'employers',title:'Количество наемных работников',val:"",type:"number"}, 
-            {name:'employersincome',title:'Средняя зарплата наемных работников',val:"",type:"number"}, 
-        ],
-        
-        cities: [
-            {id: 0,name:'Москва'},
-            {id: 1,name:'Спб'},
-            {id: 2,name:'Регион 1'},
-            {id: 3,name:'Регион 2'},
-            ],
-            
+        steps:['Текст 1','Текст 2','Текст 3','Текст 4'],
+		activeStep:0,
+            stepX:0,
         };
 		
    
@@ -73,22 +68,60 @@ class HomePage extends React.Component {
 		console.log(props);
 	}
 	
+	clickLeft = () =>
+	{
+		let { activeStep, stepX } = this.state;
+		
+		if (activeStep>0)
+		{
+			this.setState({activeStep:activeStep-1,stepX:stepX-window.innerWidth});
+		}
+		
+	}
+	
+	clickRight = () => 
+	{
+		let { activeStep, stepX } = this.state;
+		
+		if (activeStep<3)
+		{
+			this.setState({activeStep:activeStep+1,stepX:stepX+window.innerWidth});
+		}
+	}
  
 
     render() {
         const { user, users } = this.props;
         
-        let { profile, cities } = this.state;
+        let { activeStep } = this.state;
         
         var self = this;
             
-    
+		console.log(this.state);
         
         return (
 			<div>
 			<AppBar/>
 			<div>
-			  <img src="../images/home1.png" style={{width:window.innerWidth, height: window.innerHeight-70}}/>        
+			<div>
+			{activeStep == 0 && <img src="../images/home1.png" style={{width:window.innerWidth, height: window.innerHeight-70}}/>  }
+			{activeStep == 1 && <img src="../images/home2.png" style={{width:window.innerWidth, height: window.innerHeight-70}}/>  }
+			{activeStep == 2 && <img src="../images/home3.png" style={{width:window.innerWidth, height: window.innerHeight-70}}/>  }
+			{activeStep == 3 && <img src="../images/home4.png" style={{width:window.innerWidth, height: window.innerHeight-70}}/>  }
+						
+			</div>
+			<IconButton color="primary"
+                                                        style={{width: 60, height: 60, position: 'absolute',  right: 10, top: window.innerHeight/2}}
+                                                     onClick={this.clickRight}
+                                            >
+			  <IconRight style={{width: 40,height: 40}}/>
+			  </IconButton>
+			  	<IconButton color="primary"
+                                                        style={{width: 60, height: 60, position: 'absolute', left: 10, top: window.innerHeight/2}}
+                                                     onClick={this.clickLeft}
+                                            >
+			  <IconLeft style={{width: 40,height: 40}}/>
+			  </IconButton>
             </div>
 			</div>
 			
